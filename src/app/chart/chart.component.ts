@@ -70,7 +70,6 @@ export class ChartComponent {
     const plotWidth: number = 548;
 
     // <-- Modify start
-    const downsampledData: [number, number][] = dataToDownsample;
 
     /** After some research I found out that "downsampling" is averaging data points
      * so that we can display the same data with less points.
@@ -79,6 +78,7 @@ export class ChartComponent {
     // Subdivide the array in smaller chunks of dataToDownsample/plotWidth
     const chunkSize = Math.floor(dataToDownsample.length / plotWidth);
 
+    // Helper to break down array in smaller chunks
     // Based on https://stackoverflow.com/a/61413202
     const chunker = (array: [number, number][], size: number) => {
       let result = [];
@@ -93,8 +93,22 @@ export class ChartComponent {
       return result;
     };
 
-    console.log('chunked', chunker(dataToDownsample, chunkSize));
+    const chunks = chunker(dataToDownsample, chunkSize);
 
+    console.log('chunked', chunks);
+
+    // Helper to get average value in set of coordinates
+    const averageValue = (array: [number, number][]): [number, number] => {
+      const length = array.length;
+
+      const sum = array.reduce((a, b) => [a[0] + b[0], a[1] + b[1]], [0, 0]);
+
+      return [sum[0] / length, sum[1] / length];
+    };
+
+    const averaged = chunks.map((chunk) => averageValue(chunk));
+
+    const downsampledData: [number, number][] = averaged;
     // --> Modify end
 
     console.timeEnd('returnDownsampledData');
