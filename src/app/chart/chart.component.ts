@@ -108,7 +108,16 @@ export class ChartComponent {
 
     const averaged = chunks.map((chunk) => averageValue(chunk));
 
-    const downsampledData: [number, number][] = averaged;
+    // Helper to get max value in set of coordinates
+    const maxValue = (array: [number, number][]): [number, number] =>
+      array.reduce(
+        (a, b) => [Math.max(a[0], b[0]), Math.max(a[1], b[1])],
+        [0, 0]
+      );
+
+    const maxed = chunks.map((chunk) => averageValue(chunk));
+
+    const downsampledData: [number, number][] = maxed;
     // --> Modify end
 
     console.timeEnd('returnDownsampledData');
