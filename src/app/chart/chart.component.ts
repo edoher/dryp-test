@@ -71,6 +71,30 @@ export class ChartComponent {
 
     // <-- Modify start
     const downsampledData: [number, number][] = dataToDownsample;
+
+    /** After some research I found out that "downsampling" is averaging data points
+     * so that we can display the same data with less points.
+     */
+
+    // Subdivide the array in smaller chunks of dataToDownsample/plotWidth
+    const chunkSize = Math.floor(dataToDownsample.length / plotWidth);
+
+    // Based on https://stackoverflow.com/a/61413202
+    const chunker = (array: [number, number][], size: number) => {
+      let result = [];
+
+      // clone original array to not destroy it
+      const arrayClone = array.slice();
+
+      while (arrayClone.length) {
+        result.push(arrayClone.splice(0, size));
+      }
+
+      return result;
+    };
+
+    console.log('chunked', chunker(dataToDownsample, chunkSize));
+
     // --> Modify end
 
     console.timeEnd('returnDownsampledData');
