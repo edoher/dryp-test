@@ -115,7 +115,7 @@ export class ChartComponent {
         [0, 0]
       );
 
-    const maxed = chunks.map((chunk) => averageValue(chunk));
+    const maxed = chunks.map((chunk) => maxValue(chunk));
 
     const downsampledData: [number, number][] = maxed;
     // --> Modify end
